@@ -1,8 +1,9 @@
 import ply.lex as lex
 import ply.yacc as yacc
+import sys
 
-f= open("jsonObjet.txt","r")
-
+#jsonToParse = sys.stdin.read()
+jsonToParse = open("jsonObjet.txt").read()
 tokens = ( 'LLAVEIZQ','LLAVEDER', 'CORCHEIZQ','CORCHEDER','COMA','DOSPUNTOS','STRING', 'NUMBER','TRUE', 'FALSE', 'NULL' )
 # Tokens
 t_LLAVEIZQ = r'\{'
@@ -44,6 +45,9 @@ start = 'first'
 def p_first(p):
 	'first : value'
 	parsedValue = p[1]
+	f = open("result.txt", "w")
+	f. write("---" + parsedValue.yaml(-1))
+	f.close()
 	print("---" + parsedValue.yaml(-1))
 	p[0] = parsedValue.yaml(-1)
 
@@ -56,8 +60,8 @@ def p_object(p):
 		p[0] = TokenWithAttributes("terminal", (lambda x : "{}"))
 	else:
 		# O -> { M }
-		parsedObject = p[2]
-		p[0] = TokenWithAttributes("object", (lambda x : "\n" + parsedObject.yaml(x) ))
+		parsedMemembers = p[2]
+		p[0] = TokenWithAttributes("object", (lambda x : "\n" + parsedMemembers.yaml(x) ))
 
 def p_members(p):
 	'''members : pair
@@ -67,10 +71,10 @@ def p_members(p):
 	if (len(p) > 2):
 		# E -> V, E
 			parsedMembers = p[3]
-			p[0] = TokenWithAttributes("lista", (lambda x : x*"\t" + parsedPair.yaml(x) + "\n"+ parsedMembers.yaml(x)))
+			p[0] = TokenWithAttributes("lista", (lambda x : parsedPair.yaml(x) + "\n"+ parsedMembers.yaml(x)))
 	else:
 		# E -> V
-			p[0] = TokenWithAttributes("lista",(lambda x : x*"\t" + parsedPair.yaml(x)))
+			p[0] = TokenWithAttributes("lista",(lambda x : parsedPair.yaml(x)))
 
 def p_pair(p):
 	'pair : STRING DOSPUNTOS value'
@@ -89,7 +93,7 @@ def p_array(p):
 	else:
 		# A -> [ E ]
 		parsedElements = p[2]
-		p[0] = TokenWithAttributes("array", (lambda x : "\n" + x*"\t" + parsedElements.yaml(0)))
+		p[0] = TokenWithAttributes("array", (lambda x : "\n" + parsedElements.yaml(x)))
 
 def p_elements(p):
 	''' elements : value COMA elements
@@ -99,9 +103,9 @@ def p_elements(p):
 	# E -> V
 	if(len(p) > 2):
 		parsedElements = p[3]
-		p[0] = TokenWithAttributes("lista", (lambda x : x*"\t" + "-" + parsedValue.yaml(0) + "\n" + parsedElements.yaml(x)))
+		p[0] = TokenWithAttributes("lista", (lambda x : x*"\t" + "- " + parsedValue.yaml(x) + "\n" + parsedElements.yaml(x)))
 	else:
-		p[0] = TokenWithAttributes("lista", (lambda x : x*"\t" + "-" + parsedValue.yaml(0)))
+		p[0] = TokenWithAttributes("lista", (lambda x : x*"\t" + "- " + parsedValue.yaml(x)))
 
 def p_value_array(p):
 	'value : array '
@@ -125,21 +129,21 @@ def p_value_number(p):
 
 def p_value_true(p):
 	'value : TRUE '
-	p[0] = TokenWithAttributes("terminal", (lambda x : x*"\t" + "true"))
+	p[0] = TokenWithAttributes("terminal", (lambda x : "true"))
 
 def p_value_false(p):
 	'value : FALSE '
-	p[0] = TokenWithAttributes("terminal", (lambda x : x*"\t" + "false"))
+	p[0] = TokenWithAttributes("terminal", (lambda x : "false"))
 
 def p_value_null(p):
 	'value : NULL '
-	p[0] = TokenWithAttributes("terminal", (lambda x : x*"\t"))
+	p[0] = TokenWithAttributes("terminal", (lambda x : ""))
 
 
 def p_error(p):
 	raise Exception('NO RECONOCI NADA', p)
 
-lexer.input(f.read())
+lexer.input(jsonToParse)
 
 #while True:
 #    tok = lexer.token()
