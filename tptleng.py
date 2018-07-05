@@ -2,8 +2,8 @@ import ply.lex as lex
 import ply.yacc as yacc
 import sys
 
-#jsonToParse = sys.stdin.read()
-jsonToParse = open("jsonObjet.txt").read()
+jsonToParse = sys.stdin.read()
+#jsonToParse = open("jsonObjet.txt").read()
 tokens = ( 'LLAVEIZQ','LLAVEDER', 'CORCHEIZQ','CORCHEDER','COMA','DOSPUNTOS','STRING', 'NUMBER','TRUE', 'FALSE', 'NULL' )
 # Tokens
 t_LLAVEIZQ = r'\{'
