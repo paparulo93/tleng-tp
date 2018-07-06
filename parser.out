@@ -1,4 +1,4 @@
-Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+Created by PLY version 3.9 (http://www.dabeaz.com/ply)
 
 Grammar
 
@@ -64,56 +64,103 @@ state 0
     (2) object -> . LLAVEIZQ LLAVEDER
     (3) object -> . LLAVEIZQ members LLAVEDER
 
-    STRING          shift and go to state 3
-    NUMBER          shift and go to state 4
+    STRING          shift and go to state 5
+    NUMBER          shift and go to state 6
     TRUE            shift and go to state 7
-    FALSE           shift and go to state 10
+    FALSE           shift and go to state 8
     NULL            shift and go to state 9
-    CORCHEIZQ       shift and go to state 5
+    CORCHEIZQ       shift and go to state 10
     LLAVEIZQ        shift and go to state 11
 
-    array                          shift and go to state 1
-    first                          shift and go to state 2
-    value                          shift and go to state 6
-    object                         shift and go to state 8
+    first                          shift and go to state 1
+    value                          shift and go to state 2
+    array                          shift and go to state 3
+    object                         shift and go to state 4
 
 state 1
-
-    (11) value -> array .
-
-    COMA            reduce using rule 11 (value -> array .)
-    CORCHEDER       reduce using rule 11 (value -> array .)
-    $end            reduce using rule 11 (value -> array .)
-    LLAVEDER        reduce using rule 11 (value -> array .)
-
-
-state 2
 
     (0) S' -> first .
 
 
 
+state 2
+
+    (1) first -> value .
+
+    $end            reduce using rule 1 (first -> value .)
+
+
 state 3
 
-    (13) value -> STRING .
+    (11) value -> array .
 
-    COMA            reduce using rule 13 (value -> STRING .)
-    CORCHEDER       reduce using rule 13 (value -> STRING .)
-    $end            reduce using rule 13 (value -> STRING .)
-    LLAVEDER        reduce using rule 13 (value -> STRING .)
+    $end            reduce using rule 11 (value -> array .)
+    COMA            reduce using rule 11 (value -> array .)
+    CORCHEDER       reduce using rule 11 (value -> array .)
+    LLAVEDER        reduce using rule 11 (value -> array .)
 
 
 state 4
 
-    (14) value -> NUMBER .
+    (12) value -> object .
 
-    COMA            reduce using rule 14 (value -> NUMBER .)
-    CORCHEDER       reduce using rule 14 (value -> NUMBER .)
-    $end            reduce using rule 14 (value -> NUMBER .)
-    LLAVEDER        reduce using rule 14 (value -> NUMBER .)
+    $end            reduce using rule 12 (value -> object .)
+    COMA            reduce using rule 12 (value -> object .)
+    CORCHEDER       reduce using rule 12 (value -> object .)
+    LLAVEDER        reduce using rule 12 (value -> object .)
 
 
 state 5
+
+    (13) value -> STRING .
+
+    $end            reduce using rule 13 (value -> STRING .)
+    COMA            reduce using rule 13 (value -> STRING .)
+    CORCHEDER       reduce using rule 13 (value -> STRING .)
+    LLAVEDER        reduce using rule 13 (value -> STRING .)
+
+
+state 6
+
+    (14) value -> NUMBER .
+
+    $end            reduce using rule 14 (value -> NUMBER .)
+    COMA            reduce using rule 14 (value -> NUMBER .)
+    CORCHEDER       reduce using rule 14 (value -> NUMBER .)
+    LLAVEDER        reduce using rule 14 (value -> NUMBER .)
+
+
+state 7
+
+    (15) value -> TRUE .
+
+    $end            reduce using rule 15 (value -> TRUE .)
+    COMA            reduce using rule 15 (value -> TRUE .)
+    CORCHEDER       reduce using rule 15 (value -> TRUE .)
+    LLAVEDER        reduce using rule 15 (value -> TRUE .)
+
+
+state 8
+
+    (16) value -> FALSE .
+
+    $end            reduce using rule 16 (value -> FALSE .)
+    COMA            reduce using rule 16 (value -> FALSE .)
+    CORCHEDER       reduce using rule 16 (value -> FALSE .)
+    LLAVEDER        reduce using rule 16 (value -> FALSE .)
+
+
+state 9
+
+    (17) value -> NULL .
+
+    $end            reduce using rule 17 (value -> NULL .)
+    COMA            reduce using rule 17 (value -> NULL .)
+    CORCHEDER       reduce using rule 17 (value -> NULL .)
+    LLAVEDER        reduce using rule 17 (value -> NULL .)
+
+
+state 10
 
     (7) array -> CORCHEIZQ . CORCHEDER
     (8) array -> CORCHEIZQ . elements CORCHEDER
@@ -131,66 +178,19 @@ state 5
     (2) object -> . LLAVEIZQ LLAVEDER
     (3) object -> . LLAVEIZQ members LLAVEDER
 
-    CORCHEDER       shift and go to state 13
-    STRING          shift and go to state 3
-    NUMBER          shift and go to state 4
+    CORCHEDER       shift and go to state 12
+    STRING          shift and go to state 5
+    NUMBER          shift and go to state 6
     TRUE            shift and go to state 7
-    FALSE           shift and go to state 10
+    FALSE           shift and go to state 8
     NULL            shift and go to state 9
-    CORCHEIZQ       shift and go to state 5
+    CORCHEIZQ       shift and go to state 10
     LLAVEIZQ        shift and go to state 11
 
-    array                          shift and go to state 1
-    value                          shift and go to state 12
-    elements                       shift and go to state 14
-    object                         shift and go to state 8
-
-state 6
-
-    (1) first -> value .
-
-    $end            reduce using rule 1 (first -> value .)
-
-
-state 7
-
-    (15) value -> TRUE .
-
-    COMA            reduce using rule 15 (value -> TRUE .)
-    CORCHEDER       reduce using rule 15 (value -> TRUE .)
-    $end            reduce using rule 15 (value -> TRUE .)
-    LLAVEDER        reduce using rule 15 (value -> TRUE .)
-
-
-state 8
-
-    (12) value -> object .
-
-    COMA            reduce using rule 12 (value -> object .)
-    CORCHEDER       reduce using rule 12 (value -> object .)
-    $end            reduce using rule 12 (value -> object .)
-    LLAVEDER        reduce using rule 12 (value -> object .)
-
-
-state 9
-
-    (17) value -> NULL .
-
-    COMA            reduce using rule 17 (value -> NULL .)
-    CORCHEDER       reduce using rule 17 (value -> NULL .)
-    $end            reduce using rule 17 (value -> NULL .)
-    LLAVEDER        reduce using rule 17 (value -> NULL .)
-
-
-state 10
-
-    (16) value -> FALSE .
-
-    COMA            reduce using rule 16 (value -> FALSE .)
-    CORCHEDER       reduce using rule 16 (value -> FALSE .)
-    $end            reduce using rule 16 (value -> FALSE .)
-    LLAVEDER        reduce using rule 16 (value -> FALSE .)
-
+    elements                       shift and go to state 13
+    value                          shift and go to state 14
+    array                          shift and go to state 3
+    object                         shift and go to state 4
 
 state 11
 
@@ -200,22 +200,13 @@ state 11
     (5) members -> . pair COMA members
     (6) pair -> . STRING DOSPUNTOS value
 
-    LLAVEDER        shift and go to state 16
-    STRING          shift and go to state 17
+    LLAVEDER        shift and go to state 15
+    STRING          shift and go to state 18
 
-    pair                           shift and go to state 18
-    members                        shift and go to state 15
+    members                        shift and go to state 16
+    pair                           shift and go to state 17
 
 state 12
-
-    (9) elements -> value . COMA elements
-    (10) elements -> value .
-
-    COMA            shift and go to state 19
-    CORCHEDER       reduce using rule 10 (elements -> value .)
-
-
-state 13
 
     (7) array -> CORCHEIZQ CORCHEDER .
 
@@ -225,47 +216,66 @@ state 13
     LLAVEDER        reduce using rule 7 (array -> CORCHEIZQ CORCHEDER .)
 
 
-state 14
+state 13
 
     (8) array -> CORCHEIZQ elements . CORCHEDER
 
-    CORCHEDER       shift and go to state 20
+    CORCHEDER       shift and go to state 19
+
+
+state 14
+
+    (9) elements -> value . COMA elements
+    (10) elements -> value .
+
+    COMA            shift and go to state 20
+    CORCHEDER       reduce using rule 10 (elements -> value .)
 
 
 state 15
+
+    (2) object -> LLAVEIZQ LLAVEDER .
+
+    $end            reduce using rule 2 (object -> LLAVEIZQ LLAVEDER .)
+    COMA            reduce using rule 2 (object -> LLAVEIZQ LLAVEDER .)
+    CORCHEDER       reduce using rule 2 (object -> LLAVEIZQ LLAVEDER .)
+    LLAVEDER        reduce using rule 2 (object -> LLAVEIZQ LLAVEDER .)
+
+
+state 16
 
     (3) object -> LLAVEIZQ members . LLAVEDER
 
     LLAVEDER        shift and go to state 21
 
 
-state 16
-
-    (2) object -> LLAVEIZQ LLAVEDER .
-
-    $end            reduce using rule 2 (object -> LLAVEIZQ LLAVEDER .)
-    COMA            reduce using rule 2 (object -> LLAVEIZQ LLAVEDER .)
-    LLAVEDER        reduce using rule 2 (object -> LLAVEIZQ LLAVEDER .)
-    CORCHEDER       reduce using rule 2 (object -> LLAVEIZQ LLAVEDER .)
-
-
 state 17
-
-    (6) pair -> STRING . DOSPUNTOS value
-
-    DOSPUNTOS       shift and go to state 22
-
-
-state 18
 
     (4) members -> pair .
     (5) members -> pair . COMA members
 
     LLAVEDER        reduce using rule 4 (members -> pair .)
-    COMA            shift and go to state 23
+    COMA            shift and go to state 22
+
+
+state 18
+
+    (6) pair -> STRING . DOSPUNTOS value
+
+    DOSPUNTOS       shift and go to state 23
 
 
 state 19
+
+    (8) array -> CORCHEIZQ elements CORCHEDER .
+
+    $end            reduce using rule 8 (array -> CORCHEIZQ elements CORCHEDER .)
+    COMA            reduce using rule 8 (array -> CORCHEIZQ elements CORCHEDER .)
+    CORCHEDER       reduce using rule 8 (array -> CORCHEIZQ elements CORCHEDER .)
+    LLAVEDER        reduce using rule 8 (array -> CORCHEIZQ elements CORCHEDER .)
+
+
+state 20
 
     (9) elements -> value COMA . elements
     (9) elements -> . value COMA elements
@@ -282,28 +292,18 @@ state 19
     (2) object -> . LLAVEIZQ LLAVEDER
     (3) object -> . LLAVEIZQ members LLAVEDER
 
-    STRING          shift and go to state 3
-    NUMBER          shift and go to state 4
+    STRING          shift and go to state 5
+    NUMBER          shift and go to state 6
     TRUE            shift and go to state 7
-    FALSE           shift and go to state 10
+    FALSE           shift and go to state 8
     NULL            shift and go to state 9
-    CORCHEIZQ       shift and go to state 5
+    CORCHEIZQ       shift and go to state 10
     LLAVEIZQ        shift and go to state 11
 
-    array                          shift and go to state 1
-    value                          shift and go to state 12
+    value                          shift and go to state 14
     elements                       shift and go to state 24
-    object                         shift and go to state 8
-
-state 20
-
-    (8) array -> CORCHEIZQ elements CORCHEDER .
-
-    $end            reduce using rule 8 (array -> CORCHEIZQ elements CORCHEDER .)
-    COMA            reduce using rule 8 (array -> CORCHEIZQ elements CORCHEDER .)
-    CORCHEDER       reduce using rule 8 (array -> CORCHEIZQ elements CORCHEDER .)
-    LLAVEDER        reduce using rule 8 (array -> CORCHEIZQ elements CORCHEDER .)
-
+    array                          shift and go to state 3
+    object                         shift and go to state 4
 
 state 21
 
@@ -311,11 +311,23 @@ state 21
 
     $end            reduce using rule 3 (object -> LLAVEIZQ members LLAVEDER .)
     COMA            reduce using rule 3 (object -> LLAVEIZQ members LLAVEDER .)
-    LLAVEDER        reduce using rule 3 (object -> LLAVEIZQ members LLAVEDER .)
     CORCHEDER       reduce using rule 3 (object -> LLAVEIZQ members LLAVEDER .)
+    LLAVEDER        reduce using rule 3 (object -> LLAVEIZQ members LLAVEDER .)
 
 
 state 22
+
+    (5) members -> pair COMA . members
+    (4) members -> . pair
+    (5) members -> . pair COMA members
+    (6) pair -> . STRING DOSPUNTOS value
+
+    STRING          shift and go to state 18
+
+    pair                           shift and go to state 17
+    members                        shift and go to state 25
+
+state 23
 
     (6) pair -> STRING DOSPUNTOS . value
     (11) value -> . array
@@ -330,29 +342,17 @@ state 22
     (2) object -> . LLAVEIZQ LLAVEDER
     (3) object -> . LLAVEIZQ members LLAVEDER
 
-    STRING          shift and go to state 3
-    NUMBER          shift and go to state 4
+    STRING          shift and go to state 5
+    NUMBER          shift and go to state 6
     TRUE            shift and go to state 7
-    FALSE           shift and go to state 10
+    FALSE           shift and go to state 8
     NULL            shift and go to state 9
-    CORCHEIZQ       shift and go to state 5
+    CORCHEIZQ       shift and go to state 10
     LLAVEIZQ        shift and go to state 11
 
-    array                          shift and go to state 1
-    value                          shift and go to state 25
-    object                         shift and go to state 8
-
-state 23
-
-    (5) members -> pair COMA . members
-    (4) members -> . pair
-    (5) members -> . pair COMA members
-    (6) pair -> . STRING DOSPUNTOS value
-
-    STRING          shift and go to state 17
-
-    members                        shift and go to state 26
-    pair                           shift and go to state 18
+    value                          shift and go to state 26
+    array                          shift and go to state 3
+    object                         shift and go to state 4
 
 state 24
 
@@ -363,15 +363,15 @@ state 24
 
 state 25
 
-    (6) pair -> STRING DOSPUNTOS value .
+    (5) members -> pair COMA members .
 
-    COMA            reduce using rule 6 (pair -> STRING DOSPUNTOS value .)
-    LLAVEDER        reduce using rule 6 (pair -> STRING DOSPUNTOS value .)
+    LLAVEDER        reduce using rule 5 (members -> pair COMA members .)
 
 
 state 26
 
-    (5) members -> pair COMA members .
+    (6) pair -> STRING DOSPUNTOS value .
 
-    LLAVEDER        reduce using rule 5 (members -> pair COMA members .)
+    COMA            reduce using rule 6 (pair -> STRING DOSPUNTOS value .)
+    LLAVEDER        reduce using rule 6 (pair -> STRING DOSPUNTOS value .)
 
