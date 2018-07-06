@@ -77,7 +77,6 @@ def p_members(p):
 		p[0] = TokenWithAttributes("lista", (lambda x : parsedPair.yaml(x) + "\n"+ parsedMembers.yaml(x)), parsedPair.claves+parsedMembers.claves)
 		if(parsedPair.claves[0] in parsedMembers.claves):
 			print('ERROR: Claves repetidas')
-			return
 	else:
 		# E -> V
 		p[0] = TokenWithAttributes("lista",(lambda x : parsedPair.yaml(x)), parsedPair.claves)
