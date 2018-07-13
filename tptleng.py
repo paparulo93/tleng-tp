@@ -2,8 +2,7 @@ import ply.lex as lex
 import ply.yacc as yacc
 import sys
 
-#jsonToParse = sys.stdin.read()
-jsonToParse = open("jsonObjet.txt").read()
+jsonToParse = sys.stdin.read()
 
 tokens = ( 'LLAVEIZQ','LLAVEDER', 'CORCHEIZQ','CORCHEDER','COMA','DOSPUNTOS','STRING', 'NUMBER','TRUE', 'FALSE', 'NULL' )
 
@@ -23,7 +22,7 @@ def t_NUMBER(t):
 	return t
 
 def t_STRING(t):
-	r'\"[^\\"]*\"'
+	r'\"((?=\\)\\(\"|\/|\\|b|f|n|r|t|u[0-9a-f]{4})|[^\\"]*)*\"'
 	return t
 
 t_ignore = " \t"
@@ -35,7 +34,7 @@ def t_newline(t):
 def t_error(t):
 	print("ERROR EN EL LEXER")
 
-lexer = lex.lex()
+lexeer = lex.lex()
 
 class TokenWithAttributes:
 	def __init__(self, tipo, yaml, claves):
@@ -77,7 +76,6 @@ def p_members(p):
 		p[0] = TokenWithAttributes("lista", (lambda x : parsedPair.yaml(x) + "\n"+ parsedMembers.yaml(x)), parsedPair.claves+parsedMembers.claves)
 		if(parsedPair.claves[0] in parsedMembers.claves):
 			print('ERROR: Claves repetidas')
-			return
 	else:
 		# E -> V
 		p[0] = TokenWithAttributes("lista",(lambda x : parsedPair.yaml(x)), parsedPair.claves)
@@ -87,7 +85,7 @@ def p_pair(p):
 	# P -> string : M
 	keyName = p[1].strip("\"")
 	valor = p[3]
-	p[0] = TokenWithAttributes("par", (lambda x : x*"\t" + keyName + ": " + valor.yaml(x)), [keyName])
+	p[0] = TokenWithAttributes("par", (lambda x : x*" " + keyName + ": " + valor.yaml(x)), [keyName])
 
 def p_array(p):
 	'''array : CORCHEIZQ CORCHEDER
@@ -109,9 +107,9 @@ def p_elements(p):
 	# E -> V
 	if(len(p) > 2):
 		parsedElements = p[3]
-		p[0] = TokenWithAttributes("lista", (lambda x : x*"\t" + "- " + parsedValue.yaml(x) + "\n" + parsedElements.yaml(x)), [])
+		p[0] = TokenWithAttributes("lista", (lambda x : x*" " + "- " + parsedValue.yaml(x) + "\n" + parsedElements.yaml(x)), [])
 	else:
-		p[0] = TokenWithAttributes("lista", (lambda x : x*"\t" + "- " + parsedValue.yaml(x)), [])
+		p[0] = TokenWithAttributes("lista", (lambda x : x*" " + "- " + parsedValue.yaml(x)), [])
 
 def p_value_array(p):
 	'value : array '
@@ -145,19 +143,12 @@ def p_value_null(p):
 	'value : NULL '
 	p[0] = TokenWithAttributes("terminal", (lambda x : ""), [])
 
-
 def p_error(p):
-	raise Exception('NO RECONOCI NADA', p)
+	print('ERROR: sintaxis inválida')
 
-lexer.input(jsonToParse)
-
-#while True:
-#    tok = lexer.token()
-#    if not tok:
-#        break
-#    print(tok)
+lexeer.input(jsonToParse)
 
 parser = yacc.yacc(start = 'first')
 
-result = parser.parse(lexer = lexer)
+result = parser.parse(lexer = lexeer)
 
