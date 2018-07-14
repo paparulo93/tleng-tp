@@ -1,5 +1,0 @@
-ERROR: Claves repetidas
----
-age: John
-age: 30
-car: 

@@ -1,0 +1,1 @@
+[ { "clave1": "valor1", "clave2": [ "elem1", "elem2" ], "clave3": "valor3" }, "elem2", [ "elem1", "elem2", "elem3" ] ]

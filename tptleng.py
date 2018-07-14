@@ -22,7 +22,7 @@ def t_NUMBER(t):
 	return t
 
 def t_STRING(t):
-	r'\"((?=\\)\\(\"|\/|\\|b|f|n|r|t|u[0-9a-f]{4})|[^\\"]*)*\"'
+	r'\"((?=\\)\\(\"|\/|\\|b|f|n|r|t|u[0-9a-zA-Z]{4})|[^\\"]*)*\"'
 	return t
 
 t_ignore = " \t"
