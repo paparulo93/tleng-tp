@@ -86,7 +86,7 @@ def p_pair(p):
 	keyName = p[1]
 	valor = p[3]
 
-if ("-" in keyName) || ("\n" in keyName):
+	if ("-" in keyName) or ("\\"+"n" in keyName):
 		p[0] = TokenWithAttributes("par", (lambda x : x*" " + keyName + ": " + valor.yaml(x)), [keyName])
 	else:
 		p[0] = TokenWithAttributes("par", (lambda x : x*" " + keyName.strip("\"") + ": " + valor.yaml(x)), [keyName])
@@ -129,7 +129,7 @@ def p_value_object(p):
 def p_value_string(p):
 	'value : STRING '
 	valor = str(p[1])
-	if ("-" in valor) || ("\n" in valor):
+	if ("-" in valor) or ("\\"+"n" in valor):
 		p[0] = TokenWithAttributes("terminal", (lambda x : valor), [])
 	else:
 		p[0] = TokenWithAttributes("terminal", (lambda x : valor.strip('\"')), [])
