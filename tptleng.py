@@ -83,9 +83,14 @@ def p_members(p):
 def p_pair(p):
 	'pair : STRING DOSPUNTOS value'
 	# P -> string : M
-	keyName = p[1].strip("\"")
+	keyName = p[1]
 	valor = p[3]
-	p[0] = TokenWithAttributes("par", (lambda x : x*" " + keyName + ": " + valor.yaml(x)), [keyName])
+
+	if "-" in keyName:
+		p[0] = TokenWithAttributes("par", (lambda x : x*" " + keyName + ": " + valor.yaml(x)), [keyName])
+	else:
+		p[0] = TokenWithAttributes("par", (lambda x : x*" " + keyName.strip("\"") + ": " + valor.yaml(x)), [keyName])
+
 
 def p_array(p):
 	'''array : CORCHEIZQ CORCHEDER
@@ -123,8 +128,11 @@ def p_value_object(p):
 
 def p_value_string(p):
 	'value : STRING '
-	valor = str(p[1]).strip('\"')
-	p[0] = TokenWithAttributes("terminal", (lambda x : valor), [])
+	valor = str(p[1])
+	if "-" in valor:
+		p[0] = TokenWithAttributes("terminal", (lambda x : valor), [])
+	else:
+		p[0] = TokenWithAttributes("terminal", (lambda x : valor.strip('\"')), [])
 
 def p_value_number(p):
 	'value : NUMBER '
