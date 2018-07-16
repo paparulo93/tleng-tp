@@ -16,14 +16,8 @@ t_DOSPUNTOS = r':'
 t_TRUE = r'true'
 t_FALSE = r'false'
 t_NULL = r'null'
-
-def t_NUMBER(t):
-	r'-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?'
-	return t
-
-def t_STRING(t):
-	r'\"((?=\\)\\(\"|\/|\\|b|f|n|r|t|u[0-9a-zA-Z]{4})|[^\\"]*)*\"'
-	return t
+t_NUMBER = r'-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?'
+t_STRING = r'\"((?=\\)\\(\"|\/|\\|b|f|n|r|t|u[0-9a-zA-Z]{4})|[^\\"]*)*\"'
 
 t_ignore = " \t"
 
@@ -32,13 +26,12 @@ def t_newline(t):
 	t.lexer.lineno += len(t.value)
 
 def t_error(t):
-	print("ERROR EN EL LEXER")
+	raise Exception("NO SE PUDO TOKENIZAR CORRECTAMENTE EL JSON")
 
 lexeer = lex.lex()
 
 class TokenWithAttributes:
-	def __init__(self, tipo, yaml, claves):
-		self.tipo = tipo
+	def __init__(self, yaml, claves):
 		self.yaml = yaml
 		self.claves = claves
 
@@ -59,11 +52,11 @@ def p_object(p):
 
 	if p[2] == '}':
 		# O -> { }
-		p[0] = TokenWithAttributes("terminal", (lambda x : "{}"), [])
+		p[0] = TokenWithAttributes((lambda x : "{}"), [])
 	else:
 		# O -> { M }
 		parsedMemembers = p[2]
-		p[0] = TokenWithAttributes("object", (lambda x : "\n" + parsedMemembers.yaml(x) ), [])
+		p[0] = TokenWithAttributes((lambda x : "\n" + parsedMemembers.yaml(x) ), [])
 
 def p_members(p):
 	'''members : pair
@@ -73,12 +66,12 @@ def p_members(p):
 	if (len(p) > 2):
 		# E -> V, E
 		parsedMembers = p[3]
-		p[0] = TokenWithAttributes("lista", (lambda x : parsedPair.yaml(x) + "\n"+ parsedMembers.yaml(x)), parsedPair.claves+parsedMembers.claves)
+		p[0] = TokenWithAttributes((lambda x : parsedPair.yaml(x) + "\n"+ parsedMembers.yaml(x)), parsedPair.claves+parsedMembers.claves)
 		if(parsedPair.claves[0] in parsedMembers.claves):
-			print('ERROR: Claves repetidas')
+			raise Exception('EL JSON TIENE CLAVES REPETIDAS')
 	else:
 		# E -> V
-		p[0] = TokenWithAttributes("lista",(lambda x : parsedPair.yaml(x)), parsedPair.claves)
+		p[0] = TokenWithAttributes((lambda x : parsedPair.yaml(x)), parsedPair.claves)
 
 def p_pair(p):
 	'pair : STRING DOSPUNTOS value'
@@ -87,9 +80,9 @@ def p_pair(p):
 	valor = p[3]
 
 	if ("-" in keyName) or ("\\" in keyName):
-		p[0] = TokenWithAttributes("par", (lambda x : x*" " + keyName + ": " + valor.yaml(x)), [keyName])
+		p[0] = TokenWithAttributes((lambda x : x*"  " + keyName + ": " + valor.yaml(x)), [keyName])
 	else:
-		p[0] = TokenWithAttributes("par", (lambda x : x*" " + keyName.strip("\"") + ": " + valor.yaml(x)), [keyName])
+		p[0] = TokenWithAttributes((lambda x : x*"  " + keyName.strip("\"") + ": " + valor.yaml(x)), [keyName])
 
 
 def p_array(p):
@@ -98,11 +91,11 @@ def p_array(p):
 
 	if len(p) == 3:
 		# A -> [ ]
-		p[0] = TokenWithAttributes("terminal", (lambda x : "[]"), [])
+		p[0] = TokenWithAttributes((lambda x : "[]"), [])
 	else:
 		# A -> [ E ]
 		parsedElements = p[2]
-		p[0] = TokenWithAttributes("array", (lambda x : "\n" + parsedElements.yaml(x)), [])
+		p[0] = TokenWithAttributes((lambda x : "\n" + parsedElements.yaml(x)), [])
 
 def p_elements(p):
 	''' elements : value COMA elements
@@ -112,47 +105,47 @@ def p_elements(p):
 	# E -> V
 	if(len(p) > 2):
 		parsedElements = p[3]
-		p[0] = TokenWithAttributes("lista", (lambda x : x*" " + "- " + parsedValue.yaml(x) + "\n" + parsedElements.yaml(x)), [])
+		p[0] = TokenWithAttributes((lambda x : x*"  " + "- " + parsedValue.yaml(x) + "\n" + parsedElements.yaml(x)), [])
 	else:
-		p[0] = TokenWithAttributes("lista", (lambda x : x*" " + "- " + parsedValue.yaml(x)), [])
+		p[0] = TokenWithAttributes((lambda x : x*"  " + "- " + parsedValue.yaml(x)), [])
 
 def p_value_array(p):
 	'value : array '
 	parsedObject = p[1]
-	p[0] = TokenWithAttributes("array", (lambda x : parsedObject.yaml(x + 1)), [])
+	p[0] = TokenWithAttributes((lambda x : parsedObject.yaml(x + 1)), [])
 
 def p_value_object(p):
 	'value : object '
 	parsedObject = p[1]
-	p[0] = TokenWithAttributes("object", (lambda x : parsedObject.yaml(x + 1)), [])
+	p[0] = TokenWithAttributes((lambda x : parsedObject.yaml(x + 1)), [])
 
 def p_value_string(p):
 	'value : STRING '
 	valor = str(p[1])
 	if ("-" in valor) or ("\\" in valor):
-		p[0] = TokenWithAttributes("terminal", (lambda x : valor), [])
+		p[0] = TokenWithAttributes((lambda x : valor), [])
 	else:
-		p[0] = TokenWithAttributes("terminal", (lambda x : valor.strip('\"')), [])
+		p[0] = TokenWithAttributes((lambda x : valor.strip('\"')), [])
 
 def p_value_number(p):
 	'value : NUMBER '
 	valor = str(p[1])
-	p[0] = TokenWithAttributes("terminal", (lambda x : valor), [])
+	p[0] = TokenWithAttributes((lambda x : valor), [])
 
 def p_value_true(p):
 	'value : TRUE '
-	p[0] = TokenWithAttributes("terminal", (lambda x : "true"), [])
+	p[0] = TokenWithAttributes((lambda x : "true"), [])
 
 def p_value_false(p):
 	'value : FALSE '
-	p[0] = TokenWithAttributes("terminal", (lambda x : "false"), [])
+	p[0] = TokenWithAttributes((lambda x : "false"), [])
 
 def p_value_null(p):
 	'value : NULL '
-	p[0] = TokenWithAttributes("terminal", (lambda x : ""), [])
+	p[0] = TokenWithAttributes((lambda x : ""), [])
 
 def p_error(p):
-	print('ERROR: sintaxis inválida')
+	raise Exception('LA SINTAXIS DEL JSON ES ERRONEA')
 
 lexeer.input(jsonToParse)
 
